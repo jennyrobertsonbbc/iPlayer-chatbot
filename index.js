@@ -51,19 +51,18 @@ $(document).ready(function(){
 
       nextResponseObject.forEach(function(response) {
 
-        console.log('each thing', response);
-
         if (message.includes(response.trigger)){
-
-          console.log('inside if');
-          nextResponseObject = response.children;
-          console.log('next response obj', nextResponseObject);
+          if ( response.hasOwnProperty('children') ) {
+            nextResponseObject = response.children;
+          }
+          else {
+            nextResponseObject = responses;
+          }
           resolve(response.message);
-          return;
         }
 
       });
-      resolve("I'm sorry, I don't know how to answer that.");
+      resolve("I'm sorry, I don't understand.");
     });
   }
 
@@ -110,5 +109,9 @@ const responses =
   {
     trigger: "goodbye",
     message: "goodbye :,("
+  },
+  {
+    trigger: "thanks",
+    message: "No, thank you :)"
   },
 ];
