@@ -1,6 +1,7 @@
 body{
   background-color: white;
 }
+/*#0c101c*/
 #logo{
   width: 400px;
   margin: 10px;
@@ -57,6 +58,7 @@ body{
 .messages_div__message.bot{
   background-color: #f54997;
   float: left;
+  max-width: 70%;
 }
 
 .bot_img{

@@ -53,7 +53,7 @@ $(document).ready(function(){
 
 
         response.triggers.forEach(function(trigger) {
-          if (message.includes(trigger)){
+          if (message.includes(trigger)){//allowing parts of words
             if ( response.hasOwnProperty('children') ) {
               nextResponseObject = response.children;
             }
@@ -69,9 +69,6 @@ $(document).ready(function(){
   }
 
 });
- //when is eastenders next on
- //whats on bbc 1 right now - link to live
- //how old are you? ?
 
 function getHappyShow() {
   const programmeName = "Peter Kay's Comedy Shuffle ";
@@ -92,6 +89,13 @@ function getSadShow() {
   const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08wzctf/broken-series-1-episode-5";
   const programmeImage = "img/broken.jpg";
   return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
+}
+
+function getCurrentShow(channel){
+  const programme = "EastEnders"
+  const programmeLink = "http://www.bbc.co.uk/bbcone";
+  const programmeImage = "img/eastenders.jpg";
+  return `${channel} is currently showing ${programme}.<br><a href='${programmeLink}'>Watch it Live on iPlayer!  <img class='programme-image' src='${programmeImage}'</a>`;
 }
 
 const responses =
@@ -126,7 +130,7 @@ const responses =
     ]
   },
   {
-    triggers:[ "hello", "hi", "hiya", "yo"],
+    triggers:[ "hello", "hi", "hiya", "wowcha"],
     message: "hello there"
   },
   {
@@ -137,4 +141,12 @@ const responses =
     triggers:[ "thanks", "thank you", "thankyou"],
     message: "No, thank you :)"
   },
+  {
+    triggers:["BBC one", "bbc 1", "bbc1", "bbcone"],
+    message: getCurrentShow('BBC One')
+  },
+  {
+    triggers:["when is eastenders", "what time is eastenders"],
+    message: "EastEnders is next showing on BBC One tonight at 7pm."
+  }
 ];
