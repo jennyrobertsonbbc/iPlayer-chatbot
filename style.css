@@ -52,6 +52,7 @@ body{
   padding: 10px;
   border-radius: 15px;
   margin: 5px;
+  height: auto;
 }
 .messages_div__message.bot{
   background-color: #f54997;
@@ -72,5 +73,10 @@ body{
   clear: both;
 }
 
+.programme-image{
+  width: 200px;
+  display: flex;
+  margin: 5px;
+}
 
 
