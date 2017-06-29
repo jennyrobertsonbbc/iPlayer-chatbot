@@ -71,6 +71,27 @@ $(document).ready(function(){
  //whats on bbc 1 right now - link to live
  //how old are you? ?
 
+function getHappyShow() {
+  const programmeName = "Peter Kay's Comedy Shuffle ";
+  const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08w8gfq/peter-kays-comedy-shuffle-series-2-episode-1";
+  const programmeImage = "img/p03qq9lt.jpg";
+  return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
+}
+
+function getCalmingShow() {
+  const programmeName = "Planet Earth II";
+  const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b087y9wf/planet-earth-ii-a-world-of-wonder";
+  const programmeImage = "img/planetearth.jpg";
+  return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
+}
+
+function getSadShow() {
+  const programmeName = "Broken";
+  const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08wzctf/broken-series-1-episode-5";
+  const programmeImage = "img/broken.jpg";
+  return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
+}
+
 const responses =
 [
   {
@@ -79,8 +100,8 @@ const responses =
     children:
     [
       {
-        trigger: "happy",
-        message: "Here's a happy show you might enjoy"
+        trigger: "happy" || "cheerful",
+        message: "Here's a happy show you might enjoy!" + getHappyShow()
       },
       {
         trigger: "sad",
@@ -88,17 +109,17 @@ const responses =
         children: [
           {
             trigger: "yes",
-            message: "Here's a happy show for you to watch."
+            message: "Cool! Here's a funny programme for you!" + getHappyShow()
           },
           {
             trigger: "no",
-            message: "Here's a sad show for you to watch. Feel better soon!"
+            message: "Here's a sad programme for you to watch. Feel better soon!" + getSadShow()
           }
         ]
       },
       {
         trigger: "angry",
-        message: "Here's a happy show you might enjoy."
+        message: "Here's a programme to calm you down." + getCalmingShow()
       },
     ]
   },
