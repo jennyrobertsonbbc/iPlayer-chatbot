@@ -51,10 +51,8 @@ $(document).ready(function(){
         if (message.includes(responseObject.trigger)){
           resolve(responseObject.response);
         }
-        else{
-          resolve("I'm sorry I don't know how to answer that.");
-        }
       });
+      resolve("I'm sorry, I don't know how to answer that.");
     });
   }
 
@@ -62,8 +60,6 @@ $(document).ready(function(){
  //when is eastenders next on
  //whats on bbc 1 right now - link to live
  //how old are you? ?
-
-
 
 const responses =
 [
