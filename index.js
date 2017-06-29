@@ -8,7 +8,7 @@ $(document).ready(function(){
   var nextResponseObject = responses;
 
   displayBotMessage('Hello, I am the BBC iPlayer chatbot. Ask me a question.');
-  
+
   sendButton.click(function() {
     processInput (inputBox.val());
   });
@@ -147,5 +147,27 @@ const responses =
   {
     triggers:["when is eastenders", "what time is eastenders"],
     message: "EastEnders is next showing on BBC One tonight at 7pm."
+  },
+  {
+    triggers:["favourite", "fave"],
+    message: 'My favourite programme is <a href="http://www.bbc.co.uk/iplayer/episode/p04sxvgw/can-a-robot-replace-ed-sheeran">\'Can A Robot Replace Ed Sheeran?\'</a>'
+  },
+  {
+    triggers:["who created you"],
+    message:"Jenny did."
+  },
+  {
+    triggers:["directed poldark"],
+    message: "Poldark was directed by Joss Agnew. Here's the <a href='http://www.bbc.co.uk/programmes/b08vh083/credits'>full credits</a>."
+  },
+  {
+    triggers:["what can I ask you","help","what can you do","what do you know"],
+    message: `You can ask me:<br><br>
+    What shall I watch tonight?<br>
+    What's on BBC One right now?<br>
+    When is EastEnders on?<br>
+    What's your favourite show?<br>
+    Who directed Peep Show?
+    `
   }
 ];
