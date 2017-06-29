@@ -51,16 +51,18 @@ $(document).ready(function(){
 
       nextResponseObject.forEach(function(response) {
 
-        if (message.includes(response.trigger)){
-          if ( response.hasOwnProperty('children') ) {
-            nextResponseObject = response.children;
-          }
-          else {
-            nextResponseObject = responses;
-          }
-          resolve(response.message);
-        }
 
+        response.triggers.forEach(function(trigger) {
+          if (message.includes(trigger)){
+            if ( response.hasOwnProperty('children') ) {
+              nextResponseObject = response.children;
+            }
+            else {
+              nextResponseObject = responses;
+            }
+            resolve(response.message);
+          }
+        });
       });
       resolve("I'm sorry, I don't understand.");
     });
@@ -95,44 +97,44 @@ function getSadShow() {
 const responses =
 [
   {
-    trigger: "watch",
+    triggers: ["watch", "watching"],
     message: "What mood are you in today?",
     children:
     [
       {
-        trigger: "happy" || "cheerful",
+        triggers: ["happy","cheerful"],
         message: "Here's a happy show you might enjoy!" + getHappyShow()
       },
       {
-        trigger: "sad",
+        triggers:[ "sad", "upset"],
         message: "Would you like to be cheered up?",
         children: [
           {
-            trigger: "yes",
+            triggers:[ "yes", "yeah", "yep"],
             message: "Cool! Here's a funny programme for you!" + getHappyShow()
           },
           {
-            trigger: "no",
+            triggers:[ "no", "nope", "nah"],
             message: "Here's a sad programme for you to watch. Feel better soon!" + getSadShow()
           }
         ]
       },
       {
-        trigger: "angry",
+        triggers:[ "angry", "stressed"],
         message: "Here's a programme to calm you down." + getCalmingShow()
       },
     ]
   },
   {
-    trigger: "hello",
+    triggers:[ "hello", "hi", "hiya", "yo"],
     message: "hello there"
   },
   {
-    trigger: "goodbye",
+    triggers:[ "goodbye", "bye", "see ya"],
     message: "goodbye :,("
   },
   {
-    trigger: "thanks",
+    triggers:[ "thanks", "thank you", "thankyou"],
     message: "No, thank you :)"
   },
 ];
