@@ -8,8 +8,7 @@ $(document).ready(function(){
   var nextResponseObject = responses;
 
   displayBotMessage('Hello, I am the BBC iPlayer chatbot. Ask me a question.');
-  inputBox.val('What shall I watch today?');
-
+  
   sendButton.click(function() {
     processInput (inputBox.val());
   });
@@ -38,7 +37,7 @@ $(document).ready(function(){
   }
 
   function displayBotMessage(message) {
-    const messageToSend = ` <div class='message_wrapper'><img class="bot_img" src="img/bot.png"><span class="messages_div__message bot">${message}</span><div>`;
+    const messageToSend = ` <div class='message_wrapper'><img class="bot_img" src="img/iPlayer-robot.png"><span class="messages_div__message bot">${message}</span><div>`;
     setTimeout(function(){
       messagesDiv.append(messageToSend);
       messagesDiv.scrollTop(500);
