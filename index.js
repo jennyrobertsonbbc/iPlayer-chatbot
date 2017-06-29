@@ -5,6 +5,8 @@ $(document).ready(function(){
   const messagesDiv = $("#messages_div");
   const sendButton = $(".textbox_div__button");
 
+  var nextResponseObject = responses;
+
   displayBotMessage('Hello, I am the BBC iPlayer chatbot. Ask me a question.');
   inputBox.val('What shall I watch today?');
 
@@ -47,10 +49,19 @@ $(document).ready(function(){
     return new Promise((resolve, reject) => {
       const message = rawMessage.toLowerCase();
 
-      responses.forEach(function(responseObject) {
-        if (message.includes(responseObject.trigger)){
-          resolve(responseObject.response);
+      nextResponseObject.forEach(function(response) {
+
+        console.log('each thing', response);
+
+        if (message.includes(response.trigger)){
+
+          console.log('inside if');
+          nextResponseObject = response.children;
+          console.log('next response obj', nextResponseObject);
+          resolve(response.message);
+          return;
         }
+
       });
       resolve("I'm sorry, I don't know how to answer that.");
     });
@@ -65,7 +76,7 @@ const responses =
 [
   {
     trigger: "watch",
-    response: "What mood are you in today?",
+    message: "What mood are you in today?",
     children:
     [
       {
@@ -82,7 +93,7 @@ const responses =
           },
           {
             trigger: "no",
-            message: "Here's a sad for you to watch. Feel better soon!"
+            message: "Here's a sad show for you to watch. Feel better soon!"
           }
         ]
       },
@@ -94,10 +105,10 @@ const responses =
   },
   {
     trigger: "hello",
-    response: "hello there"
+    message: "hello there"
   },
   {
     trigger: "goodbye",
-    response: "goodbye :,("
+    message: "goodbye :,("
   },
 ];
