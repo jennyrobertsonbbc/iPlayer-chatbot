@@ -2,6 +2,9 @@ body{
   background-color: white;
   font-family: "Arial";
 }
+a{
+  color: #3c1d99;
+}
 /*#0c101c*/
 #logo{
   width: 490px;

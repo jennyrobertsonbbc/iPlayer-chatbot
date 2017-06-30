@@ -23,7 +23,13 @@ $(document).ready(function(){
     displayUserMessage(message);
 
     chooseReply(message).then(function(chosenResponse){
+      if( !chosenResponse )
+      {
+        displayBotMessage("I'm sorry, I don't understand.");
+        return;
+      }
       if( chosenResponse.hasOwnProperty('function')){
+
 
         eval(chosenResponse.function).then(function(functionResult) {
         displayBotMessage(chosenResponse.message + functionResult);
@@ -66,9 +72,10 @@ $(document).ready(function(){
           }
           resolve(response);
         }
+        resolve();
       });
-      resolve("I'm sorry, I don't understand.");
     });
+
   }
 
 });
@@ -86,13 +93,42 @@ function displayShow(pId) {
   });
 }
 
-function getCurrentShow(channel){
+function getCurrentShow(channelId){
   return new Promise((resolve, reject) => {
-    const programme = "EastEnders"
-    const programmeLink = "http://www.bbc.co.uk/bbcone";
-    const programmeImage = "img/eastenders.jpg";
-    resolve( `${channel} is currently showing ${programme}.<br><a href='${programmeLink}'>Watch it Live on iPlayer!  <img class='programme-image' src='${programmeImage}'</a>`);
+    $.get(`https://ibl.api.bbci.co.uk/ibl/v1/channels/${channelId}/broadcasts`, function(data, status){
+      const channelName = data.broadcasts.channel.title;
+      const programmeData = data.broadcasts.elements[0];
+      const programmeName = programmeData.episode.title;
+      const programmeLink = `http://www.bbc.co.uk/${getChannelLiveLink(channelId)}`;
+      const programmeImage = programmeData.episode.images.standard.replace('{recipe}','203x114');
+      resolve( `${channelName} is currently showing <strong>${programmeName}</strong>.<br><a href='${programmeLink}'>Watch it Live on iPlayer!  <img class='programme-image' src='${programmeImage}'</a>`);
+    });
   });
+}
+
+function getChannelLiveLink(channelId){
+
+  switch (channelId){
+    case 'bbc_one_london':
+      return 'bbcone';
+    case 'bbc_two_england':
+      return 'bbctwo';
+    case 'bbc_four':
+      return 'bbcfour';
+    case 'cbbc':
+      return 'tv/cbbc';
+    case 'cbeebies':
+      return 'tv/cbeebies';
+    case 'bbc_news24':
+      return 'tv/bbcnews';
+    case 'bbc_parliament':
+      return 'tv/bbcparliament';
+    case 'bbc_alba':
+      return 'tv/bbcalba';
+    case 's4cpbs':
+      return 'tv/s4c';
+  }
+
 }
 
 const responses =
@@ -145,7 +181,47 @@ const responses =
   {
     triggers:"(BBC|bbc) *(one|1)",
     message: '',
-    function: "getCurrentShow('bbc1')"
+    function: "getCurrentShow('bbc_one_london')"
+  },
+    {
+    triggers:"(BBC|bbc) *(two|2)",
+    message: '',
+    function: "getCurrentShow('bbc_two_england')"
+  },
+    {
+    triggers:"(BBC|bbc) *(four|4)",
+    message: '',
+    function: "getCurrentShow('bbc_four')"
+  },
+    {
+    triggers:"cbbc",
+    message: '',
+    function: "getCurrentShow('cbbc')"
+  },
+  {
+    triggers:"cbeebies",
+    message: '',
+    function: "getCurrentShow('cbeebies')"
+  },
+  {
+    triggers:"news",
+    message: '',
+    function: "getCurrentShow('bbc_news24')"
+  },
+   {
+    triggers:"parliament",
+    message: '',
+    function: "getCurrentShow('bbc_parliament')"
+  },
+   {
+    triggers:"alba",
+    message: '',
+    function: "getCurrentShow('bbc_alba')"
+  },
+   {
+    triggers:"s4c",
+    message: '',
+    function: "getCurrentShow('s4cpbs')"
   },
   {
     triggers:"(when|what time) is eastenders",
@@ -174,7 +250,7 @@ const responses =
     What's on BBC One right now?<br>
     When is EastEnders on?<br>
     What's your favourite show?<br>
-    Who directed Peep Show?
+    Who directed Poldark?
     `
   }
 ];
