@@ -78,6 +78,11 @@ $(document).ready(function(){
 
   }
 
+  $(document).on('click', '.chatbot-help-link', function(){
+    message = $(this).text();
+    processInput(message);
+  });
+
 });
 
 function displayShow(pId) {
@@ -107,7 +112,6 @@ function getCurrentShow(channelId){
 }
 
 function getChannelLiveLink(channelId){
-
   switch (channelId){
     case 'bbc_one_london':
       return 'bbcone';
@@ -128,8 +132,9 @@ function getChannelLiveLink(channelId){
     case 's4cpbs':
       return 'tv/s4c';
   }
-
 }
+
+
 
 const responses =
 [
@@ -249,14 +254,24 @@ const responses =
     function: "displayShow('b006mh9v')"
   },
   {
+    triggers: "why .*sign *in",
+    message: `Because without signing in, you'll be unable to play programmes or choose to benefit from the personalised features that BBC iPlayer offers.<br><br>
+    You won't have to sign in every time you visit BBC iPlayer as you should stay signed in for two years on each web browser or app.<br><br>
+    <a href="https://www.bbc.co.uk/iplayer/help/latest-news/account-signin">Find out more</a>
+     `
+  },
+  {
     triggers:"what can I ask you|help|what can you do|what do you know",
     message: `You can ask me:<br><br>
-    What shall I watch tonight?<br>
-    What's on BBC One right now?<br>
-    When is EastEnders on?<br>
-    What's your favourite show?<br>
-    Who directed Poldark?
-    What channel is Doctors on?
+    <a href="#" class="chatbot-help-link">What shall I watch tonight?<a/><br>
+    <a href="#" class="chatbot-help-link">What's on BBC One right now?<a/><br>
+    <a href="#" class="chatbot-help-link">When is EastEnders on?<a/><br>
+    <a href="#" class="chatbot-help-link">What's your favourite show?<a/><br>
+    <a href="#" class="chatbot-help-link">Who directed Poldark?<a/><br>
+    <a href="#" class="chatbot-help-link">What channel is Doctors on?<a/><br>
+    <a href="#" class="chatbot-help-link">Why do I have to sign in to iPlayer?<a/>
     `
   }
 ];
+
+
