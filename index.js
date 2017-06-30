@@ -22,12 +22,19 @@ $(document).ready(function(){
   function processInput (message) {
     displayUserMessage(message);
 
-    const reply = chooseReply(message);
+    chooseReply(message).then(function(chosenResponse){
+      if( chosenResponse.hasOwnProperty('function')){
 
-    reply.then(function (result) {
-        displayBotMessage(result);
+        eval(chosenResponse.function).then(function(functionResult) {
+        displayBotMessage(chosenResponse.message + functionResult);
+        });
+      }
+      else{
+        displayBotMessage(chosenResponse.message);
+      }
     });
   }
+
 
   function displayUserMessage(message) {
     const messageToSend = `<div class='message_wrapper'><span class="messages_div__message user">${message}</span></div>`;
@@ -44,22 +51,21 @@ $(document).ready(function(){
     },800);
   }
 
+
   function chooseReply(rawMessage){
     return new Promise((resolve, reject) => {
       const message = rawMessage.toLowerCase();
-
       nextResponseObject.forEach(function(response) {
 
         if (message.match(response.triggers)){
-          if ( response.hasOwnProperty('children') ) {
+          if (response.hasOwnProperty('children') ) {
             nextResponseObject = response.children;
           }
           else {
             nextResponseObject = responses;
           }
-          resolve(response.message);
+          resolve(response);
         }
-
       });
       resolve("I'm sorry, I don't understand.");
     });
@@ -69,41 +75,24 @@ $(document).ready(function(){
 
 function displayShow(pId) {
 
-  $.get(`https://ibl.api.bbci.co.uk/ibl/v1/programmes/${pId}`, function(data, status){
-    const programmeName = data.programmes.title;
-    const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08w8gfq/peter-kays-comedy-shuffle-series-2-episode-1";
-    const programmeImage = "https://ichef.bbci.co.uk/images/ic/203x114/p055pgc0.jpg";
-    //return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
-    return 'hello';
+   return new Promise((resolve, reject) => {
+    $.get(`https://ibl.api.bbci.co.uk/ibl/v1/programmes/${pId}`, function(data, status){
+      console.log(data);
+      const programmeName = data.programmes[0].title;
+      const programmeLink = `http://www.bbc.co.uk/iplayer/episodes/${pId}`;
+      const programmeImage = data.programmes[0].images.standard.replace('{recipe}','203x114');
+      resolve( `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`);
+    });
   });
 }
 
-function getHappyShow() {
-  const programmeName = "Peter Kay's Comedy Shuffle ";
-  const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08w8gfq/peter-kays-comedy-shuffle-series-2-episode-1";
-  const programmeImage = "https://ichef.bbci.co.uk/images/ic/203x114/p055pgc0.jpg";
-  return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
-}
-
-function getCalmingShow() {
-  const programmeName = "Planet Earth II";
-  const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b087y9wf/planet-earth-ii-a-world-of-wonder";
-  const programmeImage = "img/planetearth.jpg";
-  return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
-}
-
-function getSadShow() {
-  const programmeName = "Broken";
-  const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08wzctf/broken-series-1-episode-5";
-  const programmeImage = "img/broken.jpg";
-  return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
-}
-
 function getCurrentShow(channel){
-  const programme = "EastEnders"
-  const programmeLink = "http://www.bbc.co.uk/bbcone";
-  const programmeImage = "img/eastenders.jpg";
-  return `${channel} is currently showing ${programme}.<br><a href='${programmeLink}'>Watch it Live on iPlayer!  <img class='programme-image' src='${programmeImage}'</a>`;
+  return new Promise((resolve, reject) => {
+    const programme = "EastEnders"
+    const programmeLink = "http://www.bbc.co.uk/bbcone";
+    const programmeImage = "img/eastenders.jpg";
+    resolve( `${channel} is currently showing ${programme}.<br><a href='${programmeLink}'>Watch it Live on iPlayer!  <img class='programme-image' src='${programmeImage}'</a>`);
+  });
 }
 
 const responses =
@@ -115,7 +104,8 @@ const responses =
     [
       {
         triggers: "happy|cheerful",
-        message: "Here's a happy show you might enjoy!" + getHappyShow()
+        message: "Here's a happy show you might enjoy!",
+        function: "displayShow('b08w8kt4')"
       },
       {
         triggers:"sad|upset",
@@ -123,23 +113,26 @@ const responses =
         children: [
           {
             triggers: "yes|yeah|sure",
-            message: "Cool! Here's a funny programme for you!" + getHappyShow()
+            message: "Cool! Here's a funny programme for you!",
+            function: "displayShow('b08w8kt4')"
           },
           {
             triggers:"no|nope|nah",
-            message: "Here's a sad programme for you to watch. Feel better soon!" + getSadShow()
+            message: "Here's a sad programme for you to watch. Feel better soon!",
+            function: "displayShow('b08s7nyz')"
           }
         ]
       },
       {
         triggers:"angry|stressed",
-        message: "Here's a programme to calm you down." + getCalmingShow()
+        message: "Here's a programme to calm you down.",
+        function: "displayShow('p02544td')"
       },
     ]
   },
   {
     triggers:"hello|hi|hiya|wowcha",
-    message: "hello there" + displayShow('b08w8kt4')
+    message: "hello there"
   },
   {
     triggers:"goodbye|bye|see ya",
@@ -151,7 +144,8 @@ const responses =
   },
   {
     triggers:"(BBC|bbc) *(one|1)",
-    message: getCurrentShow('BBC One')
+    message: '',
+    function: "getCurrentShow('bbc1')"
   },
   {
     triggers:"(when|what time) is eastenders",
