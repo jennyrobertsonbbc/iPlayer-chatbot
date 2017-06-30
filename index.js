@@ -144,12 +144,12 @@ const responses =
     children:
     [
       {
-        triggers: "happy|cheerful",
+        triggers: "happy|cheerful|\\:-*\\)",
         message: "Here's a happy show you might enjoy!",
         function: "displayShow('b08w8kt4')"
       },
       {
-        triggers:"sad|upset",
+        triggers:"sad|upset|grumpy|tired|forlorn|crying|deflated|crabby|\\:-*\\(",
         message: "Would you like to be cheered up?",
         children: [
           {
@@ -165,7 +165,7 @@ const responses =
         ]
       },
       {
-        triggers:"angry|stressed",
+        triggers:"angry|stressed|crabby|pissed off|\\>\\:-*\\(",
         message: "Here's a programme to calm you down.",
         function: "displayShow('p02544td')"
       },
