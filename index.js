@@ -39,8 +39,9 @@ $(document).ready(function(){
   function displayBotMessage(message) {
     const messageToSend = ` <div class='message_wrapper'><img class="bot_img" src="img/iPlayer-robot.png"><span class="messages_div__message bot">${message}</span><div>`;
     setTimeout(function(){
-      messagesDiv.append(messageToSend);
       messagesDiv.scrollTop(500);
+      messagesDiv.append(messageToSend);
+
     },800);
   }
 
