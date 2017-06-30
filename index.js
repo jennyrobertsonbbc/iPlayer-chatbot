@@ -244,6 +244,11 @@ const responses =
     message: ":)"
   },
   {
+    triggers: "what channel is doctor'*s",
+    message: "Doctors is on BBC One. Here's the programmes page:",
+    function: "displayShow('b006mh9v')"
+  },
+  {
     triggers:"what can I ask you|help|what can you do|what do you know",
     message: `You can ask me:<br><br>
     What shall I watch tonight?<br>
@@ -251,6 +256,7 @@ const responses =
     When is EastEnders on?<br>
     What's your favourite show?<br>
     Who directed Poldark?
+    What channel is Doctors on?
     `
   }
 ];
