@@ -67,10 +67,21 @@ $(document).ready(function(){
 
 });
 
+function displayShow(pId) {
+
+  $.get(`https://ibl.api.bbci.co.uk/ibl/v1/programmes/${pId}`, function(data, status){
+    const programmeName = data.programmes.title;
+    const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08w8gfq/peter-kays-comedy-shuffle-series-2-episode-1";
+    const programmeImage = "https://ichef.bbci.co.uk/images/ic/203x114/p055pgc0.jpg";
+    //return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
+    return 'hello';
+  });
+}
+
 function getHappyShow() {
   const programmeName = "Peter Kay's Comedy Shuffle ";
   const programmeLink = "http://www.bbc.co.uk/iplayer/episode/b08w8gfq/peter-kays-comedy-shuffle-series-2-episode-1";
-  const programmeImage = "img/p03qq9lt.jpg";
+  const programmeImage = "https://ichef.bbci.co.uk/images/ic/203x114/p055pgc0.jpg";
   return `<br><a href='${programmeLink}'>${programmeName} <img class='programme-image' src='${programmeImage}'></a>`;
 }
 
@@ -128,7 +139,7 @@ const responses =
   },
   {
     triggers:"hello|hi|hiya|wowcha",
-    message: "hello there"
+    message: "hello there" + displayShow('b08w8kt4')
   },
   {
     triggers:"goodbye|bye|see ya",
