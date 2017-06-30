@@ -39,9 +39,8 @@ $(document).ready(function(){
   function displayBotMessage(message) {
     const messageToSend = ` <div class='message_wrapper'><img class="bot_img" src="img/iPlayer-robot.png"><span class="messages_div__message bot">${message}</span><div>`;
     setTimeout(function(){
-      messagesDiv.scrollTop(500);
       messagesDiv.append(messageToSend);
-
+      messagesDiv.scrollTop(500);
     },800);
   }
 
@@ -51,18 +50,16 @@ $(document).ready(function(){
 
       nextResponseObject.forEach(function(response) {
 
-
-        response.triggers.forEach(function(trigger) {
-          if (message.includes(trigger)){//allowing parts of words
-            if ( response.hasOwnProperty('children') ) {
-              nextResponseObject = response.children;
-            }
-            else {
-              nextResponseObject = responses;
-            }
-            resolve(response.message);
+        if (message.match(response.triggers)){
+          if ( response.hasOwnProperty('children') ) {
+            nextResponseObject = response.children;
           }
-        });
+          else {
+            nextResponseObject = responses;
+          }
+          resolve(response.message);
+        }
+
       });
       resolve("I'm sorry, I don't understand.");
     });
@@ -101,68 +98,72 @@ function getCurrentShow(channel){
 const responses =
 [
   {
-    triggers: ["watch", "watching"],
+    triggers: "watch|watching|recommend",
     message: "What mood are you in today?",
     children:
     [
       {
-        triggers: ["happy","cheerful"],
+        triggers: "happy|cheerful",
         message: "Here's a happy show you might enjoy!" + getHappyShow()
       },
       {
-        triggers:[ "sad", "upset"],
+        triggers:"sad|upset",
         message: "Would you like to be cheered up?",
         children: [
           {
-            triggers:[ "yes", "yeah", "yep"],
+            triggers: "yes|yeah|sure",
             message: "Cool! Here's a funny programme for you!" + getHappyShow()
           },
           {
-            triggers:[ "no", "nope", "nah"],
+            triggers:"no|nope|nah",
             message: "Here's a sad programme for you to watch. Feel better soon!" + getSadShow()
           }
         ]
       },
       {
-        triggers:[ "angry", "stressed"],
+        triggers:"angry|stressed",
         message: "Here's a programme to calm you down." + getCalmingShow()
       },
     ]
   },
   {
-    triggers:[ "hello", "hi", "hiya", "wowcha"],
+    triggers:"hello|hi|hiya|wowcha",
     message: "hello there"
   },
   {
-    triggers:[ "goodbye", "bye", "see ya"],
+    triggers:"goodbye|bye|see ya",
     message: "goodbye :,("
   },
   {
-    triggers:[ "thanks", "thank you", "thankyou"],
+    triggers:"thanks|thank you|thankyou",
     message: "No, thank you :)"
   },
   {
-    triggers:["BBC one", "bbc 1", "bbc1", "bbcone"],
+    triggers:"(BBC|bbc) *(one|1)",
     message: getCurrentShow('BBC One')
   },
   {
-    triggers:["when is eastenders", "what time is eastenders"],
+    triggers:"(when|what time) is eastenders",
     message: "EastEnders is next showing on BBC One tonight at 7pm."
   },
   {
-    triggers:["favourite", "fave"],
+    triggers:"favourite|fave",
     message: 'My favourite programme is <a href="http://www.bbc.co.uk/iplayer/episode/p04sxvgw/can-a-robot-replace-ed-sheeran">\'Can A Robot Replace Ed Sheeran?\'</a>'
   },
   {
-    triggers:["who created you"],
+    triggers:"who created you",
     message:"Jenny did."
   },
   {
-    triggers:["directed poldark"],
+    triggers:"(directed|director).*poldark",
     message: "Poldark was directed by Joss Agnew. Here's the <a href='http://www.bbc.co.uk/programmes/b08vh083/credits'>full credits</a>."
   },
   {
-    triggers:["what can I ask you","help","what can you do","what do you know"],
+    triggers: "^(ok|okay|kk|k|okay then)$",
+    message: ":)"
+  },
+  {
+    triggers:"what can I ask you|help|what can you do|what do you know",
     message: `You can ask me:<br><br>
     What shall I watch tonight?<br>
     What's on BBC One right now?<br>
