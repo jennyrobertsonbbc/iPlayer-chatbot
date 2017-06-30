@@ -25,7 +25,7 @@ $(document).ready(function(){
     chooseReply(message).then(function(chosenResponse){
       if( !chosenResponse )
       {
-        displayBotMessage("I'm sorry, I don't understand.");
+        displayBotMessage("I'm sorry, I don't understand. Try typing 'help'.");
         return;
       }
       if( chosenResponse.hasOwnProperty('function')){
@@ -72,8 +72,8 @@ $(document).ready(function(){
           }
           resolve(response);
         }
-        resolve();
       });
+      resolve();
     });
 
   }
